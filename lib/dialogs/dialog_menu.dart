@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:sdm_priok/features/view_login.dart';
+import 'package:sdm_priok/features/auth/view_login.dart';
 import 'package:sdm_priok/helpers/colours.dart';
 import 'package:sdm_priok/helpers/data_helper.dart';
 

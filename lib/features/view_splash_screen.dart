@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:sdm_priok/features/homes/view_home_admin.dart';
 import 'package:sdm_priok/features/homes/view_home_operator.dart';
 import 'package:sdm_priok/features/homes/view_home_supervisor.dart';
-import 'package:sdm_priok/features/view_login.dart';
+import 'package:sdm_priok/features/auth/view_login.dart';
 import 'package:sdm_priok/helpers/colours.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -55,7 +55,7 @@ class _SplashScreenState extends State<SplashScreenPage> {
         } else if (loginEmail == "operator@gmail.com") {
           return HomeOperatorPage();
         } else {
-          return HomeOperatorPage();
+          return HomeAdminPage();
         }
       }));
     });
