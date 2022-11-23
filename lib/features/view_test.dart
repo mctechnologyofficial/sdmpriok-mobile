@@ -4,9 +4,33 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:sdm_priok/helpers/colours.dart';
 import 'package:sdm_priok/helpers/strings.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-class HomePage extends StatelessWidget {
+import '../helpers/data_helper.dart';
+
+class HomePage extends StatefulWidget {
   static String TagHome = "HomePage";
+
+  @override
+  State<HomePage> createState() => _HomePageState();
+
+}
+
+class _HomePageState extends State<HomePage> {
+  SharedPreferences? sharedPref;
+  DataHelper dataHelper = new DataHelper();
+
+  @override
+  void initState() {
+    super.initState();
+    initializePreference().whenComplete((){
+      setState(() {});
+    });
+  }
+
+  Future<void> initializePreference() async{
+    this.sharedPref = await SharedPreferences.getInstance();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -15,7 +39,7 @@ class HomePage extends StatelessWidget {
         ClipRRect(
           borderRadius: BorderRadius.circular(50),
           child: Image.asset(
-            "assets/images/ic_avatar.png",
+            "assets/icons/ic_avatar.png",
             height: 50,
             width: 50,
           ),
@@ -26,7 +50,7 @@ class HomePage extends StatelessWidget {
         Column(
           children: [
             Text(
-              "Hi, Nicholas",
+              "Hi, ${this.sharedPref?.getString("Name")}",
               style: GoogleFonts.poppins(
                 fontSize: 18,
                 fontWeight: FontWeight.bold,
@@ -51,7 +75,7 @@ class HomePage extends StatelessWidget {
               decoration: InputDecoration(
                 hintText: 'Search courses...',
                 border: InputBorder.none,
-                fillColor: colorWhitePrimary,
+                fillColor: ColorWhitePrimary,
                 filled: true,
               ),
             ),
@@ -60,18 +84,22 @@ class HomePage extends StatelessWidget {
         SizedBox(
           width: 10,
         ),
-        Material(
-          shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-          elevation: 2,
-          color: colorPrimary,
-          clipBehavior: Clip.antiAlias,
-          child: Padding(
-            padding: EdgeInsets.all(15),
-            child: Image.asset(
-              "assets/icons/ic_search.png",
-              height: 20,
-              width: 20,
+        GestureDetector(
+          onTap: (){
+            dataHelper.clearDatas();
+          },
+          child: Material(
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+            elevation: 2,
+            color: ColorPrimary,
+            clipBehavior: Clip.antiAlias,
+            child: Padding(
+              padding: EdgeInsets.all(15),
+              child: Image.asset(
+                "assets/icons/ic_search.png",
+                height: 20,
+                width: 20,
+              ),
             ),
           ),
         )
@@ -93,32 +121,32 @@ class HomePage extends StatelessWidget {
     );
 
     return Scaffold(
-      backgroundColor: colorWhiteSecondary,
+      backgroundColor: ColorWhiteSecondary,
       body: SafeArea(
         child: SingleChildScrollView(
             child: Padding(
-          padding: EdgeInsets.all(20),
-          child: Column(
-            children: [
-              navbar,
-              SizedBox(
-                height: 20,
+              padding: EdgeInsets.all(20),
+              child: Column(
+                children: [
+                  navbar,
+                  SizedBox(
+                    height: 20,
+                  ),
+                  etSearch,
+                  SizedBox(
+                    height: 20,
+                  ),
+                  txtTitle,
+                  ChildCourse(1, "assets/icons/ic_course.jpg", "Kelas 1", dummyDesc),
+                  ChildCourse(1, "assets/icons/ic_course.jpg", "Kelas 1", dummyDesc),
+                  ChildCourse(1, "assets/icons/ic_course.jpg", "Kelas 1", dummyDesc),
+                  ChildCourse(1, "assets/icons/ic_course.jpg", "Kelas 1", dummyDesc),
+                  ChildCourse(1, "assets/icons/ic_course.jpg", "Kelas 1", dummyDesc),
+                  ChildCourse(1, "assets/icons/ic_course.jpg", "Kelas 1", dummyDesc),
+                  ChildCourse(1, "assets/icons/ic_course.jpg", "Kelas 1", dummyDesc),
+                ],
               ),
-              etSearch,
-              SizedBox(
-                height: 20,
-              ),
-              txtTitle,
-              ChildCourse(1, "assets/images/ic_course.jpg", "Kelas 1", dummyDesc),
-              ChildCourse(1, "assets/images/ic_course.jpg", "Kelas 1", dummyDesc),
-              ChildCourse(1, "assets/images/ic_course.jpg", "Kelas 1", dummyDesc),
-              ChildCourse(1, "assets/images/ic_course.jpg", "Kelas 1", dummyDesc),
-              ChildCourse(1, "assets/images/ic_course.jpg", "Kelas 1", dummyDesc),
-              ChildCourse(1, "assets/images/ic_course.jpg", "Kelas 1", dummyDesc),
-              ChildCourse(1, "assets/images/ic_course.jpg", "Kelas 1", dummyDesc),
-            ],
-          ),
-        )),
+            )),
       ),
     );
   }
@@ -167,12 +195,12 @@ class ChildCourse extends StatelessWidget {
                 SizedBox(
                   width: 200,
                   child: Text(desc,
-                      maxLines: 2,
-                      textAlign: TextAlign.justify,
-                      style: GoogleFonts.poppins(
-                        fontSize: 14,
-                        fontWeight: FontWeight.w300,
-                      ),
+                    maxLines: 2,
+                    textAlign: TextAlign.justify,
+                    style: GoogleFonts.poppins(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w300,
+                    ),
                     overflow: TextOverflow.ellipsis,
                   ),
                 ),

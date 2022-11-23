@@ -40,6 +40,8 @@ dependencies:
   flutter_svg: ^1.1.0
   google_fonts: ^1.1.2
   carousel_slider: ^4.1.1
+  shared_preferences: ^2.0.15
+  liquid_progress_indicator: ^0.4.0
 
 dev_dependencies:
   flutter_test:
