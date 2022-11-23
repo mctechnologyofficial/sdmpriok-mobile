@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:sdm_priok/features/employee/view_list_employee.dart';
-import 'package:sdm_priok/features/employee/view_list_role.dart';
-import 'package:sdm_priok/features/employee/view_list_team.dart';
+import 'package:sdm_priok/features/role/view_list_role.dart';
+import 'package:sdm_priok/features/team/view_list_team.dart';
 
 import '../../helpers/colours.dart';
 

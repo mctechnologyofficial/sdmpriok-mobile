@@ -3,6 +3,7 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:provider/provider.dart';
 import 'package:sdm_priok/features/view_splash_screen.dart';
 import 'package:sdm_priok/provider/auth_provider.dart';
+import 'package:sdm_priok/provider/employee_provider.dart';
 
 void main() {
   runApp(MyApp());
@@ -15,7 +16,10 @@ class MyApp extends StatelessWidget {
       providers: [
         ChangeNotifierProvider(
           create: (_) => AuthProvider(),
-        )
+        ),
+        ChangeNotifierProvider(
+          create: (_) => EmployeeProvider(),
+        ),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,

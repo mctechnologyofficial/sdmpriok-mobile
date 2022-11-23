@@ -8,3 +8,4 @@ Color ColorWhite = new Color(0XFFFFFFFF);
 Color ColorBlack = new Color(0XFF000000);
 Color ColorSecondWhite = new Color(0XFFF9F9F9);
 Color ColorGrey = new Color(0XFF7F8487);
+Color ColorText = new Color(0XFF1C1C1E);
