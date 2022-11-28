@@ -1,10 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
 import 'package:sdm_priok/features/employee/view_add_employee.dart';
+import 'package:sdm_priok/features/role/view_add_role.dart';
 import 'package:sdm_priok/helpers/colours.dart';
 
 import '../../helpers/strings.dart';
+import '../../provider/role_provider.dart';
 
 class ListRole extends StatefulWidget {
   const ListRole({Key? key}) : super(key: key);
@@ -16,6 +19,10 @@ class ListRole extends StatefulWidget {
 class _TeamState extends State<ListRole> {
   @override
   Widget build(BuildContext context) {
+    var size = MediaQuery.of(context).size;
+    final double itemHeight = (size.height) / 5;
+    final double itemWidth = size.width / 2;
+
     return SafeArea(
         child: Scaffold(
           appBar: AppBar(
@@ -23,20 +30,45 @@ class _TeamState extends State<ListRole> {
             backgroundColor: ColorPrimary,
           ),
           backgroundColor: ColorWhite,
-          body: SingleChildScrollView(
-            child: Column(
-              children: [
-                ChildTeam(1, "assets/icons/ic_role.png", "Admin"),
-                ChildTeam(2, "assets/icons/ic_role.png", "Supervisor"),
-                ChildTeam(3, "assets/icons/ic_role.png", "Operator"),
-              ],
+          body: RefreshIndicator(
+            onRefresh: () => Provider.of<RoleProvider>(context, listen: false).getRoles(),
+            color: ColorPrimary,
+            child: Container(
+              margin: EdgeInsets.all(10),
+              child: FutureBuilder(
+                  future: Provider.of<RoleProvider>(context, listen: false).getRoles(),
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return Center(
+                        child: CircularProgressIndicator(),
+                      );
+                    } else {
+                      return Consumer<RoleProvider>(
+                        builder: (context, data, _) {
+                          return GridView.builder(
+                            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                              childAspectRatio: (itemWidth / itemHeight),
+                              crossAxisCount: 2,
+                            ),
+                            itemCount: data.dataRoles.length,
+                            itemBuilder: (_, i) => InkWell(
+                              onTap: () {
+                                // Navigator.of(context).push(MaterialPageRoute(builder: (context) => DetailEmployee(dataHash: data.dataEmployee[i].hash)));
+                              },
+                              child: ChildTeam(data.dataRoles[i].id, "assets/icons/ic_role.png", data.dataRoles[i].name),
+                            ),
+                          );
+                        },
+                      );
+                    }
+                  }),
             ),
           ),
           floatingActionButton: FloatingActionButton(
             backgroundColor: ColorPrimary,
             child: Text("+"),
             onPressed: () {
-              Navigator.of(context).push(MaterialPageRoute(builder: (context) => EmployeeAdd()));
+              Navigator.of(context).push(MaterialPageRoute(builder: (context) => RoleAdd()));
             },
           ),
         )
@@ -60,7 +92,7 @@ class ChildTeam extends StatelessWidget {
         padding: EdgeInsets.all(10),
         width: double.infinity,
         color: Colors.white,
-        child: Row(
+        child: Column(
           children: [
             ClipRRect(
               borderRadius: BorderRadius.circular(10),
@@ -71,7 +103,7 @@ class ChildTeam extends StatelessWidget {
               ),
             ),
             SizedBox(
-              width: 10,
+              height: 10,
             ),
             Text(
               name,
@@ -79,7 +111,7 @@ class ChildTeam extends StatelessWidget {
                 fontSize: 14,
                 fontWeight: FontWeight.w400,
               ),
-              textAlign: TextAlign.left,
+              textAlign: TextAlign.center,
             )
           ],
         ),

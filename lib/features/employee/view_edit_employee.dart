@@ -4,19 +4,25 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
 import 'package:sdm_priok/helpers/colours.dart';
 
-class EmployeeAdd extends StatefulWidget {
+import '../../provider/employee_provider.dart';
+
+class EmployeeEdit extends StatefulWidget {
+  final String hash;
+
+  EmployeeEdit({required this.hash});
+
   @override
-  _EmployeeAddState createState() => _EmployeeAddState();
+  _EmployeeEditState createState() => _EmployeeEditState();
 }
 
-class _EmployeeAddState extends State<EmployeeAdd> {
+class _EmployeeEditState extends State<EmployeeEdit> {
   final TextEditingController nipController = TextEditingController();
   final TextEditingController nameController = TextEditingController();
   final TextEditingController phoneController = TextEditingController();
   final TextEditingController emailController = TextEditingController();
-  final TextEditingController passwordController = TextEditingController();
   final snackbarKey = GlobalKey<ScaffoldState>();
   String dataPosition = "";
   String dataTeam = "";
@@ -24,12 +30,26 @@ class _EmployeeAddState extends State<EmployeeAdd> {
   bool _isLoading = false;
   final List listTeam = ["Team A", "Team B", "Team C"];
   final List listPosition = ["Admin", "Supervisor", "Operator"];
-  bool isShowed = true;
 
-  void setPasswordVisibility() {
-    setState(() {
-      isShowed = !isShowed;
+  @override
+  void initState() {
+    dataPosition = listPosition[0];
+    dataTeam = listTeam[0];
+    Future.delayed(Duration.zero, () {
+      Provider.of<EmployeeProvider>(context, listen: false).detailEmployee(widget.hash).then((response) {
+        nipController.text = response.nip;
+        nameController.text = response.name;
+        emailController.text = response.email;
+        phoneController.text = response.phone;
+        // team = response.teams.name;
+        // role = response.roles[0].name;
+      });
     });
+    super.initState();
+  }
+
+  void deleteEmployee(){
+
   }
 
   // void submit(BuildContext context) {
@@ -58,13 +78,6 @@ class _EmployeeAddState extends State<EmployeeAdd> {
   //     });
   //   }
   // }
-
-  @override
-  void initState() {
-    super.initState();
-    dataPosition = listPosition[0];
-    dataTeam = listTeam[0];
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -180,49 +193,6 @@ class _EmployeeAddState extends State<EmployeeAdd> {
               ),
               SizedBox(
                 height: 10,
-              ),
-              Text(
-                "Password",
-                style: GoogleFonts.poppins(fontSize: 15),
-              ),
-              Container(
-                child: TextField(
-                  style: GoogleFonts.poppins(
-                    height: 1,
-                  ),
-                  controller: passwordController,
-                  autofocus: false,
-                  obscureText: isShowed,
-                  decoration: InputDecoration(
-                    border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(15),
-                        borderSide: BorderSide(color: ColorPrimary)),
-                  ),
-                ),
-              ),
-              Align(
-                alignment: Alignment.centerRight,
-                child: FlatButton(
-                  onPressed: setPasswordVisibility,
-                  child: Container(
-                    width: 130,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        FaIcon(
-                          isShowed ? FontAwesomeIcons.eye : FontAwesomeIcons.eyeSlash,
-                          size: 15,
-                        ),
-                        SizedBox(width: 5,),
-                        Text(
-                          isShowed ? "Show Password" : "Hide Password",
-                          style: GoogleFonts.poppins(
-                              fontSize: 14, fontWeight: FontWeight.w300),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
               ),
               Text(
                 "Position",

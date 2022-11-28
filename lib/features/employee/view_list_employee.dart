@@ -31,8 +31,7 @@ class _EmployeeState extends State<ListEmployee> {
       ),
       backgroundColor: ColorWhite,
       body: RefreshIndicator(
-        onRefresh: () =>
-            Provider.of<EmployeeProvider>(context, listen: false).getEmployee(),
+        onRefresh: () => Provider.of<EmployeeProvider>(context, listen: false).getEmployee(),
         color: ColorPrimary,
         child: Container(
           margin: EdgeInsets.all(10),
@@ -57,7 +56,7 @@ class _EmployeeState extends State<ListEmployee> {
                           onTap: () {
                             Navigator.of(context).push(MaterialPageRoute(
                                 builder: (context) => DetailEmployee(
-                                    hash: data.dataEmployee[i].hash)));
+                                    dataHash: data.dataEmployee[i].hash)));
                           },
                           child: ChildKaryawan(
                               int.parse(data.dataEmployee[i].nip.isEmpty

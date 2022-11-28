@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
+import 'package:sdm_priok/features/employee/view_edit_employee.dart';
 
 import '../../helpers/colours.dart';
 import '../../provider/employee_provider.dart';
 
 class DetailEmployee extends StatefulWidget {
-  final String hash;
+  final String dataHash;
 
-  DetailEmployee({required this.hash});
+  DetailEmployee({required this.dataHash});
 
   @override
   State<DetailEmployee> createState() => _DetailEmployeeState();
@@ -27,7 +28,7 @@ class _DetailEmployeeState extends State<DetailEmployee> {
   void initState() {
     Future.delayed(Duration.zero, () {
       Provider.of<EmployeeProvider>(context, listen: false)
-          .detailEmployee(widget.hash)
+          .detailEmployee(widget.dataHash)
           .then((response) {
         nip = response.nip;
         name = response.name;
@@ -285,6 +286,51 @@ class _DetailEmployeeState extends State<DetailEmployee> {
                   );
                 }
               }),
+        ),
+      ),
+      bottomSheet: Container(
+        width: MediaQuery.of(context).size.width,
+        child: Padding(
+          padding: EdgeInsets.all(10),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Material(
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+                elevation: 5,
+                color: ColorPrimary,
+                clipBehavior: Clip.antiAlias,
+                child: MaterialButton(
+                  minWidth: MediaQuery.of(context).size.width / 2.2,
+                  height: 50,
+                  color: ColorRed,
+                  child: Text('Delete',
+                      style: TextStyle(fontSize: 15, color: Colors.white)),
+                  onPressed: () {
+                    // submit(context);
+                  },
+                ),
+              ),
+              Material(
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+                elevation: 5,
+                color: ColorPrimary,
+                clipBehavior: Clip.antiAlias,
+                child: MaterialButton(
+                  minWidth: MediaQuery.of(context).size.width / 2.2,
+                  height: 50,
+                  color: ColorGreen,
+                  child: Text('Edit',
+                      style: TextStyle(fontSize: 15, color: Colors.white)),
+                  onPressed: () {
+                    Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => EmployeeEdit(
+                            hash: widget.dataHash)));
+                  },
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     ));

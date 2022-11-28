@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:sdm_priok/features/view_splash_screen.dart';
 import 'package:sdm_priok/provider/auth_provider.dart';
 import 'package:sdm_priok/provider/employee_provider.dart';
+import 'package:sdm_priok/provider/role_provider.dart';
 
 void main() {
   runApp(MyApp());
@@ -19,6 +20,9 @@ class MyApp extends StatelessWidget {
         ),
         ChangeNotifierProvider(
           create: (_) => EmployeeProvider(),
+        ),
+        ChangeNotifierProvider(
+          create: (_) => RoleProvider(),
         ),
       ],
       child: MaterialApp(
