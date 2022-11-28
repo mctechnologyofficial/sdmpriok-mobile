@@ -84,7 +84,7 @@ class _EmployeeEditState extends State<EmployeeEdit> {
     return Scaffold(
       key: snackbarKey,
       appBar: AppBar(
-        title: Text("Add Employee"),
+        title: Text("Edit Employee"),
         backgroundColor: ColorPrimary,
       ),
       body: SingleChildScrollView(

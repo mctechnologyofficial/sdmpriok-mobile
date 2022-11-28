@@ -4,6 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:sdm_priok/features/employee/view_add_employee.dart';
 import 'package:sdm_priok/features/role/view_add_role.dart';
+import 'package:sdm_priok/features/role/view_detail_role.dart';
 import 'package:sdm_priok/helpers/colours.dart';
 
 import '../../helpers/strings.dart';
@@ -31,12 +32,12 @@ class _TeamState extends State<ListRole> {
           ),
           backgroundColor: ColorWhite,
           body: RefreshIndicator(
-            onRefresh: () => Provider.of<RoleProvider>(context, listen: false).getRoles(),
+            onRefresh: () => Provider.of<RoleProvider>(context, listen: true).getRoles(),
             color: ColorPrimary,
             child: Container(
               margin: EdgeInsets.all(10),
               child: FutureBuilder(
-                  future: Provider.of<RoleProvider>(context, listen: false).getRoles(),
+                  future: Provider.of<RoleProvider>(context, listen: true).getRoles(),
                   builder: (context, snapshot) {
                     if (snapshot.connectionState == ConnectionState.waiting) {
                       return Center(
@@ -53,7 +54,7 @@ class _TeamState extends State<ListRole> {
                             itemCount: data.dataRoles.length,
                             itemBuilder: (_, i) => InkWell(
                               onTap: () {
-                                // Navigator.of(context).push(MaterialPageRoute(builder: (context) => DetailEmployee(dataHash: data.dataEmployee[i].hash)));
+                                Navigator.of(context).push(MaterialPageRoute(builder: (context) => DetailRole(dataId: data.dataRoles[i].id)));
                               },
                               child: ChildTeam(data.dataRoles[i].id, "assets/icons/ic_role.png", data.dataRoles[i].name),
                             ),

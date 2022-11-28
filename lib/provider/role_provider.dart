@@ -42,4 +42,24 @@ class RoleProvider extends ChangeNotifier {
       return false;
     }
   }
+
+  Future<bool> updateRole(String id, String name, String guard_name) async {
+    final endpointUrl = 'https://humancapitalpriokpomu.com/api/role/update/' + id;
+
+    final uri = Uri.parse(endpointUrl).replace(queryParameters: {
+      'name': name,
+      'guard_name': guard_name,
+    });
+    final response = await http.post(uri);
+    if (response.statusCode == 200) {
+      notifyListeners();
+      return true;
+    }
+    return false;
+  }
+
+  Future<ResponseGetRoles> detailRole(int id) async {
+    return _data.firstWhere((i) => i.id == id);
+  }
+
 }
