@@ -3,6 +3,9 @@ import 'dart:ffi';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class DataHelper{
+  String Role_Admin = "Admin";
+  String Role_Supervisor = "Admin";
+  String Role_Operator = "Admin";
   final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
   SharedPreferences? sharedPref;
 

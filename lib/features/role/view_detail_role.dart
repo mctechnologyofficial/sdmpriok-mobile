@@ -17,6 +17,7 @@ class DetailRole extends StatefulWidget {
 }
 
 class _DetailRoleState extends State<DetailRole> {
+  int id = 0;
   String name = "", guard = "";
 
   @override
@@ -25,11 +26,46 @@ class _DetailRoleState extends State<DetailRole> {
       Provider.of<RoleProvider>(context, listen: false)
           .detailRole(widget.dataId)
           .then((response) {
+        id = response.id;
         name = response.name;
         guard = response.guardName;
       });
     });
     super.initState();
+  }
+
+  void deleteRole() {
+    Widget cancelButton = TextButton(
+      child: Text("No"),
+      onPressed: () {
+        Navigator.pop(context);
+      },
+    );
+    Widget continueButton = TextButton(
+      child: Text("Yes"),
+      onPressed: () {
+        Provider.of<RoleProvider>(context, listen: false).deleteRole(id);
+        Navigator.pop(context);
+        Navigator.pop(context);
+      },
+    );
+
+    // set up the AlertDialog
+    AlertDialog alert = AlertDialog(
+      title: Text("Confirmation"),
+      content: Text("Are you sure you want to delete this role ?"),
+      actions: [
+        cancelButton,
+        continueButton,
+      ],
+    );
+
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
   }
 
   @override
@@ -47,7 +83,8 @@ class _DetailRoleState extends State<DetailRole> {
         color: ColorPrimary,
         child: Container(
           child: FutureBuilder(
-              future: Provider.of<RoleProvider>(context, listen: false).getRoles(),
+              future:
+                  Provider.of<RoleProvider>(context, listen: false).getRoles(),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return Center(
@@ -70,8 +107,10 @@ class _DetailRoleState extends State<DetailRole> {
                                           decoration: BoxDecoration(
                                               color: ColorPrimary,
                                               borderRadius: BorderRadius.only(
-                                                  bottomLeft: Radius.circular(20),
-                                                  bottomRight: Radius.circular(20))),
+                                                  bottomLeft:
+                                                      Radius.circular(20),
+                                                  bottomRight:
+                                                      Radius.circular(20))),
                                         ),
                                         Padding(
                                           padding: EdgeInsets.all(20),
@@ -80,7 +119,8 @@ class _DetailRoleState extends State<DetailRole> {
                                               Center(
                                                 child: ClipRRect(
                                                     borderRadius:
-                                                        BorderRadius.circular(50),
+                                                        BorderRadius.circular(
+                                                            50),
                                                     child: Image.asset(
                                                         "assets/icons/ic_role.png",
                                                         height: 100,
@@ -97,9 +137,12 @@ class _DetailRoleState extends State<DetailRole> {
                                                       name,
                                                       style: GoogleFonts.poppins(
                                                           fontSize: 18,
-                                                          fontWeight: FontWeight.bold,
-                                                          color: ColorWhitePrimary),
-                                                      textAlign: TextAlign.center,
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                          color:
+                                                              ColorWhitePrimary),
+                                                      textAlign:
+                                                          TextAlign.center,
                                                     ),
                                                   ),
                                                 ],
@@ -130,7 +173,10 @@ class _DetailRoleState extends State<DetailRole> {
                                                     SizedBox(
                                                       width: 5,
                                                     ),
-                                                    ChildData("ID", widget.dataId.toString()),
+                                                    ChildData(
+                                                        "ID",
+                                                        widget.dataId
+                                                            .toString()),
                                                   ],
                                                 ),
                                                 SizedBox(
@@ -150,17 +196,19 @@ class _DetailRoleState extends State<DetailRole> {
                                               children: [
                                                 Row(
                                                   crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
+                                                      CrossAxisAlignment.start,
                                                   children: [
                                                     Icon(
-                                                      Icons.admin_panel_settings,
+                                                      Icons
+                                                          .admin_panel_settings,
                                                       color: ColorText,
                                                       size: 20,
                                                     ),
                                                     SizedBox(
                                                       width: 5,
                                                     ),
-                                                    ChildData("Guard Name", guard),
+                                                    ChildData(
+                                                        "Guard Name", guard),
                                                   ],
                                                 ),
                                                 SizedBox(
@@ -210,7 +258,7 @@ class _DetailRoleState extends State<DetailRole> {
                   child: Text('Delete',
                       style: TextStyle(fontSize: 15, color: Colors.white)),
                   onPressed: () {
-                    // submit(context);
+                    deleteRole();
                   },
                 ),
               ),
@@ -227,7 +275,8 @@ class _DetailRoleState extends State<DetailRole> {
                   child: Text('Edit',
                       style: TextStyle(fontSize: 15, color: Colors.white)),
                   onPressed: () {
-                    Navigator.of(context).push(MaterialPageRoute(builder: (context) => RoleEdit(dataId: widget.dataId)));
+                    Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => RoleEdit(dataId: widget.dataId)));
                   },
                 ),
               ),

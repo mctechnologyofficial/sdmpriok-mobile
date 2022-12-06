@@ -1,12 +1,14 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:sdm_priok/features/auth/view_login.dart';
 import 'package:sdm_priok/features/homes/view_home_admin.dart';
 import 'package:sdm_priok/features/homes/view_home_operator.dart';
 import 'package:sdm_priok/features/homes/view_home_supervisor.dart';
-import 'package:sdm_priok/features/auth/view_login.dart';
 import 'package:sdm_priok/helpers/colours.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+import '../helpers/data_helper.dart';
 
 class SplashScreenPage extends StatefulWidget {
   @override
@@ -14,6 +16,7 @@ class SplashScreenPage extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreenPage> {
+  DataHelper dataHelper = new DataHelper();
   SharedPreferences? sharedPref;
   String? loginEmail = "";
 
@@ -57,6 +60,15 @@ class _SplashScreenState extends State<SplashScreenPage> {
         } else {
           return HomeAdminPage();
         }
+        // if (dataHelper.getLoginRole() == dataHelper.Role_Admin) {
+        //   return HomeAdminPage();
+        // } else if (dataHelper.getLoginRole() == dataHelper.Role_Supervisor) {
+        //   return HomeSupervisorPage();
+        // } else if (dataHelper.getLoginRole() == dataHelper.Role_Operator) {
+        //   return HomeOperatorPage();
+        // } else {
+        //   return LoginPage();
+        // }
       }));
     });
   }

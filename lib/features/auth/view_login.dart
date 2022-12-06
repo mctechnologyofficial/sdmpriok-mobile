@@ -37,18 +37,14 @@ class _LoginPageState extends State<LoginPage> {
           _isLoading = true;
         });
         EasyLoading.show(status: 'Loading...');
-        Provider.of<AuthProvider>(context, listen: false)
-            .postLogin(emailController.text, passwordController.text)
-            .then((res) {
+        Provider.of<AuthProvider>(context, listen: false).postLogin(emailController.text, passwordController.text).then((res) {
           if (res) {
             EasyLoading.dismiss();
             EasyLoading.showSuccess('Welcome !');
             setState(() {
               _isLoading = false;
             });
-            Navigator.of(context).pushAndRemoveUntil(
-                MaterialPageRoute(builder: (context) => HomeAdminPage()),
-                (route) => false);
+            switchPage();
           } else {
             EasyLoading.dismiss();
             EasyLoading.showError('Incorrect Email Or Password !');
@@ -59,6 +55,19 @@ class _LoginPageState extends State<LoginPage> {
         });
       }
     }
+  }
+
+  void switchPage(){
+    // Future<String?> loginRole = dataHelper.getLoginRole();
+    // if (dataHelper.getLoginRole() == dataHelper.Role_Admin) {
+      Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => HomeAdminPage()), (route) => false);
+    // } else if (dataHelper.getLoginRole() == dataHelper.Role_Supervisor) {
+    //   Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => HomeSupervisorPage()), (route) => false);
+    // } else if (dataHelper.getLoginRole() == dataHelper.Role_Operator) {
+    //   Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => HomeOperatorPage()), (route) => false);
+    // } else {
+    //   EasyLoading.showInfo('Your account has a problem, please contact the call center !');
+    // }
   }
 
   @override

@@ -36,12 +36,32 @@ class AuthProvider extends ChangeNotifier {
       'password': password,
     });
     final response = await http.post(uri);
+    print("RespLogin : " + response.body);
     ResponseLogin responseLogin = ResponseLogin.fromJson(jsonDecode(response.body));
 
     if (response.statusCode == 200) {
       notifyListeners();
+      String role = responseLogin.role.toLowerCase();
+      print("Role : " + role);
       dataHelper.setIsLoggedIn(true);
-      dataHelper.setLoginName(email);
+      dataHelper.setLoginName(responseLogin.name);
+      if (role == "admin") {
+        dataHelper.setLoginRole(dataHelper.Role_Admin);
+      } else if (role == "supervisor operator") {
+        dataHelper.setLoginRole(dataHelper.Role_Supervisor);
+      } else if (role == "supervisor senior") {
+        dataHelper.setLoginRole(dataHelper.Role_Supervisor);
+      } else if (role == "supervisor") {
+        dataHelper.setLoginRole(dataHelper.Role_Supervisor);
+      } else if (role == "senior operator") {
+        dataHelper.setLoginRole(dataHelper.Role_Operator);
+      } else if (role == "ahli muda operator") {
+        dataHelper.setLoginRole(dataHelper.Role_Operator);
+      } else if (role == "operator senior control room") {
+        dataHelper.setLoginRole(dataHelper.Role_Operator);
+      } else if (role == "operator gt rsg") {
+        dataHelper.setLoginRole(dataHelper.Role_Operator);
+      }
       return true;
     } else {
       return false;

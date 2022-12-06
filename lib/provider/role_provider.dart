@@ -62,4 +62,9 @@ class RoleProvider extends ChangeNotifier {
     return _data.firstWhere((i) => i.id == id);
   }
 
+  Future<void> deleteRole(int id) async {
+    final url = 'https://humancapitalpriokpomu.com/api/role/delete/' + id.toString();
+    await http.post(url);
+    notifyListeners();
+  }
 }
