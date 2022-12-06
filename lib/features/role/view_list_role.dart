@@ -14,10 +14,10 @@ class ListRole extends StatefulWidget {
   const ListRole({Key? key}) : super(key: key);
 
   @override
-  State<ListRole> createState() => _TeamState();
+  State<ListRole> createState() => _RoleState();
 }
 
-class _TeamState extends State<ListRole> {
+class _RoleState extends State<ListRole> {
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
@@ -56,7 +56,7 @@ class _TeamState extends State<ListRole> {
                               onTap: () {
                                 Navigator.of(context).push(MaterialPageRoute(builder: (context) => DetailRole(dataId: data.dataRoles[i].id)));
                               },
-                              child: ChildTeam(data.dataRoles[i].id, "assets/icons/ic_role.png", data.dataRoles[i].name),
+                              child: ChildRole(data.dataRoles[i].id, "assets/icons/ic_role.png", data.dataRoles[i].name),
                             ),
                           );
                         },
@@ -77,11 +77,11 @@ class _TeamState extends State<ListRole> {
   }
 }
 
-class ChildTeam extends StatelessWidget {
+class ChildRole extends StatelessWidget {
   int id = 0;
   String image = "", name = "";
 
-  ChildTeam(this.id, this.image, this.name) {}
+  ChildRole(this.id, this.image, this.name) {}
 
   @override
   Widget build(BuildContext context) {

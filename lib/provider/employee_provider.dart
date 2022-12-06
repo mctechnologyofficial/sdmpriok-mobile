@@ -46,7 +46,7 @@ class EmployeeProvider extends ChangeNotifier {
 
   Future<bool> deleteEmployee(String hash) async {
     final url = 'https://humancapitalpriokpomu.com/api/employee/delete/' + hash;
-    final response = await http.get(Uri.parse(url));
+    final response = await http.post(Uri.parse(url));
     // ResponseAddRole responseLogin = ResponseAddRole.fromJson(jsonDecode(response.body));
     print("RespDeleteEmployee : " + response.body);
     if (response.statusCode == 200) {
