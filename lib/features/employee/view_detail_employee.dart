@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:sdm_priok/features/employee/view_edit_employee.dart';
@@ -16,6 +17,7 @@ class DetailEmployee extends StatefulWidget {
 }
 
 class _DetailEmployeeState extends State<DetailEmployee> {
+  bool _isLoading = false;
   String nip = "",
       name = "",
       email = "",
@@ -40,6 +42,57 @@ class _DetailEmployeeState extends State<DetailEmployee> {
       });
     });
     super.initState();
+  }
+
+  void deleteEmployee() {
+    Widget cancelButton = TextButton(
+      child: Text("No"),
+      onPressed: () {
+        Navigator.pop(context);
+      },
+    );
+    Widget continueButton = TextButton(
+      child: Text("Yes"),
+      onPressed: () {
+        if (!_isLoading) {
+          setState(() {
+            _isLoading = true;
+          });
+          Provider.of<EmployeeProvider>(context, listen: false).deleteEmployee(widget.dataHash).then((res) {
+            if (res) {
+              EasyLoading.dismiss();
+              EasyLoading.showSuccess('Employee deleted successfully !');
+              setState(() {
+                _isLoading = false;
+              });
+              Navigator.pop(context);
+              Navigator.pop(context);
+            } else {
+              EasyLoading.dismiss();
+              EasyLoading.showError('Employee failed to delete !');
+              Navigator.pop(context);
+              setState(() {
+                _isLoading = false;
+              });
+            }
+          });
+        }
+      },
+    );
+    AlertDialog alert = AlertDialog(
+      title: Text("Confirmation"),
+      content: Text("Are you sure you want to delete this employee ?"),
+      actions: [
+        cancelButton,
+        continueButton,
+      ],
+    );
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
   }
 
   @override
@@ -296,7 +349,8 @@ class _DetailEmployeeState extends State<DetailEmployee> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Material(
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(15)),
                 elevation: 5,
                 color: ColorPrimary,
                 clipBehavior: Clip.antiAlias,
@@ -307,12 +361,13 @@ class _DetailEmployeeState extends State<DetailEmployee> {
                   child: Text('Delete',
                       style: TextStyle(fontSize: 15, color: Colors.white)),
                   onPressed: () {
-                    // submit(context);
+                    deleteEmployee();
                   },
                 ),
               ),
               Material(
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(15)),
                 elevation: 5,
                 color: ColorPrimary,
                 clipBehavior: Clip.antiAlias,
@@ -324,8 +379,8 @@ class _DetailEmployeeState extends State<DetailEmployee> {
                       style: TextStyle(fontSize: 15, color: Colors.white)),
                   onPressed: () {
                     Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) => EmployeeEdit(
-                            hash: widget.dataHash)));
+                        builder: (context) =>
+                            EmployeeEdit(hash: widget.dataHash)));
                   },
                 ),
               ),

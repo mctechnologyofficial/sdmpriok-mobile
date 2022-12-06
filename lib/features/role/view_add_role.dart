@@ -29,9 +29,7 @@ class _RoleAddState extends State<RoleAdd> {
           _isLoading = true;
         });
         EasyLoading.show(status: 'Loading...');
-        Provider.of<RoleProvider>(context, listen: false)
-            .addRole(nameController.text, guardController.text)
-            .then((res) {
+        Provider.of<RoleProvider>(context, listen: false).addRole(nameController.text, guardController.text).then((res) {
           if (res) {
             EasyLoading.dismiss();
             EasyLoading.showSuccess('Successfully added roles !');
