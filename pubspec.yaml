@@ -45,6 +45,7 @@ dependencies:
   json_annotation: ^4.7.0
   flutter_easyloading: ^3.0.5
   font_awesome_flutter: ^10.2.1
+  image_picker:
 
 dev_dependencies:
   flutter_test:
