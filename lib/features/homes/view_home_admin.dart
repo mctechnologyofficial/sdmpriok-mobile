@@ -5,10 +5,12 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
 import 'package:sdm_priok/features/chart/view_chart.dart';
 import 'package:sdm_priok/features/mentoring/view_mentoring.dart';
 import 'package:sdm_priok/features/utilities/view_utilities.dart';
 import 'package:sdm_priok/helpers/colours.dart';
+import 'package:sdm_priok/provider/slider_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../dialogs/dialog_menu.dart';
@@ -44,7 +46,7 @@ final List<Widget> imageSliders = imgList
           ),
         ))
     .toList();
-
+    
 class HomeAdminPage extends StatefulWidget {
   static String TagHome = "HomePage";
 
@@ -143,7 +145,53 @@ class _HomeAdminPageState extends State<HomeAdminPage> {
                 SizedBox(
                   height: 20,
                 ),
-                ComplicatedImageDemo(),
+                // ComplicatedImageDemo(),
+                FutureBuilder(
+                    future: Provider.of<SliderProvider>(context, listen: false)
+                        .getSliders(),
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return Center(
+                          child: CircularProgressIndicator(),
+                        );
+                      } else {
+                        return Consumer<SliderProvider>(
+                          builder: (context, data, _) {
+                            return CarouselSlider(
+                              options: CarouselOptions(
+                                autoPlay: true,
+                                aspectRatio: 2.0,
+                                enlargeCenterPage: true,
+                              ),
+                              items: data.dataSlider.map((value) {
+                                return Container(
+                                  child: Container(
+                                    height: 250,
+                                    margin: EdgeInsets.all(5.0),
+                                    decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(20),
+                                        color: ColorWhite),
+                                    child: ClipRRect(
+                                      borderRadius: BorderRadius.circular(
+                                          20), // Image border
+                                      child: SizedBox.fromSize(
+                                        child: Image.network(
+                                          "https://humancapitalpriokpomu.com/" +
+                                              value.image,
+                                          fit: BoxFit.cover,
+                                          height: 250,
+                                          width: 1000,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                );
+                              }).toList(),
+                            );
+                          },
+                        );
+                      }
+                    }),
                 SizedBox(
                   height: 20,
                 ),
@@ -201,13 +249,17 @@ class Features extends StatelessWidget {
     return GestureDetector(
       onTap: () {
         if (id == 1) {
-          Navigator.of(context).push(MaterialPageRoute(builder: (context) => Employee()));
-        }else if(id == 2){
-          Navigator.of(context).push(MaterialPageRoute(builder: (context) => Mentoring()));
-        }else if(id == 3){
-          Navigator.of(context).push(MaterialPageRoute(builder: (context) => Chart()));
-        } else if(id == 4){
-          Navigator.of(context).push(MaterialPageRoute(builder: (context) => Utilities()));
+          Navigator.of(context)
+              .push(MaterialPageRoute(builder: (context) => Employee()));
+        } else if (id == 2) {
+          Navigator.of(context)
+              .push(MaterialPageRoute(builder: (context) => Mentoring()));
+        } else if (id == 3) {
+          Navigator.of(context)
+              .push(MaterialPageRoute(builder: (context) => Chart()));
+        } else if (id == 4) {
+          Navigator.of(context)
+              .push(MaterialPageRoute(builder: (context) => Utilities()));
         }
       },
       child: Card(
@@ -242,18 +294,53 @@ class Features extends StatelessWidget {
   }
 }
 
-class ComplicatedImageDemo extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return CarouselSlider(
-      options: CarouselOptions(
-        autoPlay: true,
-        aspectRatio: 2.0,
-        enlargeCenterPage: true,
-      ),
-      items: imageSliders,
-    );
-  }
-}
-
-
+// class ComplicatedImageDemo extends StatelessWidget {
+//   @override
+//   Widget build(BuildContext context) {
+//     return FutureBuilder(
+//         future:
+//             Provider.of<SliderProvider>(context, listen: false).getSliders(),
+//         builder: (context, snapshot) {
+//           if (snapshot.connectionState == ConnectionState.waiting) {
+//             return Center(
+//               child: CircularProgressIndicator(),
+//             );
+//           } else {
+//             return Consumer<SliderProvider>(
+//               builder: (context, data, _) {
+//                 return CarouselSlider(
+//                   options: CarouselOptions(
+//                     autoPlay: true,
+//                     aspectRatio: 2.0,
+//                     enlargeCenterPage: true,
+//                   ),
+//                   items: data.dataSlider.map((value) {
+//                     return Container(
+//                       child: Container(
+//                         height: 250,
+//                         margin: EdgeInsets.all(5.0),
+//                         decoration: BoxDecoration(
+//                             borderRadius: BorderRadius.circular(20),
+//                             color: ColorWhite),
+//                         child: ClipRRect(
+//                           borderRadius:
+//                               BorderRadius.circular(20), // Image border
+//                           child: SizedBox.fromSize(
+//                             child: Image.network(
+//                               "https://humancapitalpriokpomu.com/"+value.image,
+//                               fit: BoxFit.cover,
+//                               height: 250,
+//                               width: 1000,
+//                             ),
+//                           ),
+//                         ),
+//                       ),
+//                     );
+//                   }).toList(),
+//                 );
+//               },
+//             );
+//           }
+//         });
+//   }
+// }

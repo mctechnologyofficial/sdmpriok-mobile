@@ -7,10 +7,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:liquid_progress_indicator/liquid_progress_indicator.dart';
+import 'package:provider/provider.dart';
 import 'package:sdm_priok/features/competency/view_list_competency.dart';
 import 'package:sdm_priok/features/employee/view_list_employee.dart';
 import 'package:sdm_priok/helpers/colours.dart';
 import 'package:sdm_priok/helpers/strings.dart';
+import 'package:sdm_priok/provider/slider_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../dialogs/dialog_menu.dart';
@@ -145,7 +147,53 @@ class _HomeOperatorPageState extends State<HomeOperatorPage> {
                 SizedBox(
                   height: 20,
                 ),
-                ComplicatedImageDemo(),
+                // ComplicatedImageDemo(),
+                FutureBuilder(
+                    future: Provider.of<SliderProvider>(context, listen: false)
+                        .getSliders(),
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return Center(
+                          child: CircularProgressIndicator(),
+                        );
+                      } else {
+                        return Consumer<SliderProvider>(
+                          builder: (context, data, _) {
+                            return CarouselSlider(
+                              options: CarouselOptions(
+                                autoPlay: true,
+                                aspectRatio: 2.0,
+                                enlargeCenterPage: true,
+                              ),
+                              items: data.dataSlider.map((value) {
+                                return Container(
+                                  child: Container(
+                                    height: 250,
+                                    margin: EdgeInsets.all(5.0),
+                                    decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(20),
+                                        color: ColorWhite),
+                                    child: ClipRRect(
+                                      borderRadius: BorderRadius.circular(
+                                          20), // Image border
+                                      child: SizedBox.fromSize(
+                                        child: Image.network(
+                                          "https://humancapitalpriokpomu.com/" +
+                                              value.image,
+                                          fit: BoxFit.cover,
+                                          height: 250,
+                                          width: 1000,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                );
+                              }).toList(),
+                            );
+                          },
+                        );
+                      }
+                    }),
                 SizedBox(
                   height: 20,
                 ),
