@@ -4,8 +4,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class DataHelper{
   String Role_Admin = "Admin";
-  String Role_Supervisor = "Admin";
-  String Role_Operator = "Admin";
+  String Role_Supervisor = "Supervisor";
+  String Role_Operator = "Operator";
   final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
   SharedPreferences? sharedPref;
 
@@ -27,8 +27,19 @@ class DataHelper{
 
   Future<String?> getLoginRole() async {
     sharedPref = await SharedPreferences.getInstance();
-    String? name = sharedPref?.getString("Role");
-    return name;
+    String? role = sharedPref?.getString("Role");
+    return role;
+  }
+
+  Future<void> setLoginPict(String pict) async{
+    sharedPref = await SharedPreferences.getInstance();
+    sharedPref?.setString("Pict", pict);
+  }
+
+  Future<String?> getLoginPict() async {
+    sharedPref = await SharedPreferences.getInstance();
+    String? pict = sharedPref?.getString("Pict");
+    return pict;
   }
 
   Future<void> setIsLoggedIn(bool isLoggedIn) async{
@@ -40,12 +51,6 @@ class DataHelper{
     SharedPreferences prefs = await SharedPreferences.getInstance();
     bool? boolValue = prefs.getBool('IsLoggedIn');
     return boolValue;
-  }
-
-  Future<String> loginName() async {
-    final SharedPreferences prefs = await _prefs;
-    final String name = prefs.getString('Name') ?? "";
-    return name;
   }
 
   Future<void> clearDatas() async{

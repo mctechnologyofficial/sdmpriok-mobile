@@ -51,15 +51,15 @@ class _SplashScreenState extends State<SplashScreenPage> {
     var duration = const Duration(seconds: 2);
     return Timer(duration, () {
       Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (_) {
-        if (loginEmail == "admin@gmail.com") {
-          return HomeAdminPage();
-        } else if (loginEmail == "supervisor@gmail.com") {
-          return HomeSupervisorPage();
-        } else if (loginEmail == "operator@gmail.com") {
+        // if (loginEmail == "admin@gmail.com") {
+        //   return HomeAdminPage();
+        // } else if (loginEmail == "supervisor@gmail.com") {
+        //   return HomeSupervisorPage();
+        // } else if (loginEmail == "operator@gmail.com") {
           return HomeOperatorPage();
-        } else {
-          return HomeAdminPage();
-        }
+        // } else {
+        //   return HomeSupervisorPage();
+        // }
         // if (dataHelper.getLoginRole() == dataHelper.Role_Admin) {
         //   return HomeAdminPage();
         // } else if (dataHelper.getLoginRole() == dataHelper.Role_Supervisor) {

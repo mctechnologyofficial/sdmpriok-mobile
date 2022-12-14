@@ -3,6 +3,7 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:provider/provider.dart';
 import 'package:sdm_priok/features/view_splash_screen.dart';
 import 'package:sdm_priok/provider/auth_provider.dart';
+import 'package:sdm_priok/provider/competency_provider.dart';
 import 'package:sdm_priok/provider/employee_provider.dart';
 import 'package:sdm_priok/provider/role_provider.dart';
 import 'package:sdm_priok/provider/slider_provider.dart';
@@ -31,6 +32,9 @@ class MyApp extends StatelessWidget {
         ),
         ChangeNotifierProvider(
           create: (_) => SliderProvider(),
+        ),
+        ChangeNotifierProvider(
+          create: (_) => CompetencyProvider(),
         ),
       ],
       child: MaterialApp(

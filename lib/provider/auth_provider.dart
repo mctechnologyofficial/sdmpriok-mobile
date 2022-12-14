@@ -50,6 +50,7 @@ class AuthProvider extends ChangeNotifier {
       } else if (role == "supervisor operator") {
         dataHelper.setLoginRole(dataHelper.Role_Supervisor);
       } else if (role == "supervisor senior") {
+        print("SPVSenior : " + "True");
         dataHelper.setLoginRole(dataHelper.Role_Supervisor);
       } else if (role == "supervisor") {
         dataHelper.setLoginRole(dataHelper.Role_Supervisor);
