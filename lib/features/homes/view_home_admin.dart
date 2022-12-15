@@ -57,6 +57,7 @@ class HomeAdminPage extends StatefulWidget {
 class _HomeAdminPageState extends State<HomeAdminPage> {
   SharedPreferences? sharedPref;
   DataHelper dataHelper = new DataHelper();
+  String profilePicture = "";
 
   @override
   void initState() {
@@ -68,6 +69,7 @@ class _HomeAdminPageState extends State<HomeAdminPage> {
 
   Future<void> initializePreference() async {
     this.sharedPref = await SharedPreferences.getInstance();
+    profilePicture = this.sharedPref?.getString("Pict") as String;
   }
 
   @override
@@ -96,8 +98,14 @@ class _HomeAdminPageState extends State<HomeAdminPage> {
                               // Image border
                               child: SizedBox.fromSize(
                                 // size: Size.fromRadius(40), // Image radius
-                                child: Image.network(
-                                    "https://awsimages.detik.net.id/community/media/visual/2022/01/12/ardhito-pramono-10_169.jpeg?w=1200",
+                                child: profilePicture.isEmpty
+                                    ? Image.asset(
+                                    "assets/icons/ic_avatar.png",
+                                    height: 50,
+                                    width: 50,
+                                    fit: BoxFit.cover)
+                                    : Image.network(
+                                    dataHelper.BaseURL + profilePicture,
                                     width: 50,
                                     height: 50,
                                     fit: BoxFit.cover),

@@ -52,11 +52,11 @@ class _SplashScreenState extends State<SplashScreenPage> {
     return Timer(duration, () {
       Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (_) {
         // if (loginEmail == "admin@gmail.com") {
-        //   return HomeAdminPage();
+          return HomeAdminPage();
         // } else if (loginEmail == "supervisor@gmail.com") {
         //   return HomeSupervisorPage();
         // } else if (loginEmail == "operator@gmail.com") {
-          return HomeOperatorPage();
+        //   return HomeOperatorPage();
         // } else {
         //   return HomeSupervisorPage();
         // }

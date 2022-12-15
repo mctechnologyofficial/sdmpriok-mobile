@@ -60,6 +60,7 @@ class _HomeSupervisorPageState extends State<HomeSupervisorPage> {
   SharedPreferences? sharedPref;
   DataHelper dataHelper = new DataHelper();
   double percent = 0.0;
+  String profilePicture = "";
 
   @override
   void initState() {
@@ -81,6 +82,7 @@ class _HomeSupervisorPageState extends State<HomeSupervisorPage> {
 
   Future<void> initializePreference() async {
     this.sharedPref = await SharedPreferences.getInstance();
+    profilePicture = this.sharedPref?.getString("Pict") as String;
   }
 
   @override
@@ -103,49 +105,55 @@ class _HomeSupervisorPageState extends State<HomeSupervisorPage> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Container(
-                          width: 250,
-                          child: Row(
-                            children: [
-                              ClipRRect(
-                                borderRadius: BorderRadius.circular(50),
-                                // Image border
-                                child: SizedBox.fromSize(
-                                  // size: Size.fromRadius(40), // Image radius
-                                  child: Image.network(
-                                      "https://awsimages.detik.net.id/community/media/visual/2022/01/12/ardhito-pramono-10_169.jpeg?w=1200",
-                                      width: 50,
-                                      height: 50,
-                                      fit: BoxFit.cover),
+                            width: 250,
+                            child: Row(
+                              children: [
+                                ClipRRect(
+                                  borderRadius: BorderRadius.circular(50),
+                                  // Image border
+                                  child: SizedBox.fromSize(
+                                    // size: Size.fromRadius(40), // Image radius
+                                    child: profilePicture.isEmpty
+                                        ? Image.asset(
+                                            "assets/icons/ic_avatar.png",
+                                            height: 50,
+                                            width: 50,
+                                            fit: BoxFit.cover)
+                                        : Image.network(
+                                            dataHelper.BaseURL + profilePicture,
+                                            width: 50,
+                                            height: 50,
+                                            fit: BoxFit.cover),
+                                  ),
                                 ),
-                              ),
-                              SizedBox(
-                                width: 10,
-                              ),
-                              Flexible(
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      "${this.sharedPref?.getString("Name")}",
-                                      overflow: TextOverflow.ellipsis,
-                                      style: GoogleFonts.poppins(
-                                        fontSize: 18,
-                                        fontWeight: FontWeight.bold,
+                                SizedBox(
+                                  width: 10,
+                                ),
+                                Flexible(
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        "${this.sharedPref?.getString("Name")}",
+                                        overflow: TextOverflow.ellipsis,
+                                        style: GoogleFonts.poppins(
+                                          fontSize: 18,
+                                          fontWeight: FontWeight.bold,
+                                        ),
                                       ),
-                                    ),
-                                    Text(
-                                      "Supervisor",
-                                      style: GoogleFonts.poppins(
-                                          fontSize: 15,
-                                          fontWeight: FontWeight.w300,
-                                          color: ColorGrey),
-                                    ),
-                                  ],
+                                      Text(
+                                        "Supervisor",
+                                        style: GoogleFonts.poppins(
+                                            fontSize: 15,
+                                            fontWeight: FontWeight.w300,
+                                            color: ColorGrey),
+                                      ),
+                                    ],
+                                  ),
                                 ),
-                              ),
-                            ],
-                          )
-                        ),
+                              ],
+                            )),
                         Align(
                           alignment: Alignment.centerRight,
                           child: GestureDetector(
@@ -231,7 +239,8 @@ class _HomeSupervisorPageState extends State<HomeSupervisorPage> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Features(1, "assets/icons/ic_monitoring.png", "Mentoring"),
+                        Features(
+                            1, "assets/icons/ic_monitoring.png", "Mentoring"),
                         Features(2, "assets/icons/ic_exam.png", "Tools"),
                         Features(3, "assets/icons/ic_graph.png", "Chart"),
                       ],
@@ -337,18 +346,18 @@ class Features extends StatelessWidget {
   String image;
   String title;
 
-  Features(this.id, this.image, this.title) {
-
-  }
+  Features(this.id, this.image, this.title) {}
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
         if (id == 1) {
-          Navigator.of(context).push(MaterialPageRoute(builder: (context) => ListEmployee()));
-        }else if(id == 2){
-          Navigator.of(context).push(MaterialPageRoute(builder: (context) => ListCompetency()));
+          Navigator.of(context)
+              .push(MaterialPageRoute(builder: (context) => ListEmployee()));
+        } else if (id == 2) {
+          Navigator.of(context)
+              .push(MaterialPageRoute(builder: (context) => ListCompetency()));
         }
       },
       child: Card(

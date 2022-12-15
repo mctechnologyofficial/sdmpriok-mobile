@@ -45,6 +45,7 @@ class AuthProvider extends ChangeNotifier {
       print("Role : " + role);
       dataHelper.setIsLoggedIn(true);
       dataHelper.setLoginName(responseLogin.name);
+      dataHelper.setLoginPict(responseLogin.image);
       if (role == "admin") {
         dataHelper.setLoginRole(dataHelper.Role_Admin);
       } else if (role == "supervisor operator") {

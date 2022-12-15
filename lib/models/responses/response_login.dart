@@ -1,3 +1,7 @@
+// To parse this JSON data, do
+//
+//     final responseLogin = responseLoginFromJson(jsonString);
+
 import 'package:meta/meta.dart';
 import 'dart:convert';
 
@@ -11,6 +15,7 @@ class ResponseLogin {
     required this.status,
     required this.name,
     required this.role,
+    required this.image,
     required this.message,
     required this.token,
   });
@@ -19,6 +24,7 @@ class ResponseLogin {
   bool status;
   String name;
   String role;
+  String image;
   String message;
   String token;
 
@@ -27,6 +33,7 @@ class ResponseLogin {
     status: json["status"],
     name: json["name"],
     role: json["role"],
+    image: json["image"],
     message: json["message"],
     token: json["token"],
   );
@@ -36,6 +43,7 @@ class ResponseLogin {
     "status": status,
     "name": name,
     "role": role,
+    "image": image,
     "message": message,
     "token": token,
   };

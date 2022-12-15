@@ -59,6 +59,7 @@ class HomeOperatorPage extends StatefulWidget {
 class _HomeOperatorPageState extends State<HomeOperatorPage> {
   SharedPreferences? sharedPref;
   DataHelper dataHelper = new DataHelper();
+  String profilePicture = "";
 
   @override
   void initState() {
@@ -70,6 +71,7 @@ class _HomeOperatorPageState extends State<HomeOperatorPage> {
 
   Future<void> initializePreference() async {
     this.sharedPref = await SharedPreferences.getInstance();
+    profilePicture = this.sharedPref?.getString("Pict") as String;
   }
 
   @override
@@ -98,11 +100,16 @@ class _HomeOperatorPageState extends State<HomeOperatorPage> {
                               // Image border
                               child: SizedBox.fromSize(
                                 // size: Size.fromRadius(40), // Image radius
-                                child: Image.network(
-                                    "https://awsimages.detik.net.id/community/media/visual/2022/01/12/ardhito-pramono-10_169.jpeg?w=1200",
-                                    width: 50,
-                                    height: 50,
-                                    fit: BoxFit.cover),
+                                child: profilePicture.isEmpty
+                                    ? Image.asset("assets/icons/ic_avatar.png",
+                                        height: 50,
+                                        width: 50,
+                                        fit: BoxFit.cover)
+                                    : Image.network(
+                                        dataHelper.BaseURL + profilePicture,
+                                        width: 50,
+                                        height: 50,
+                                        fit: BoxFit.cover),
                               ),
                             ),
                             SizedBox(
@@ -178,8 +185,7 @@ class _HomeOperatorPageState extends State<HomeOperatorPage> {
                                           20), // Image border
                                       child: SizedBox.fromSize(
                                         child: Image.network(
-                                          "https://humancapitalpriokpomu.com/" +
-                                              value.image,
+                                          dataHelper.BaseURL + value.image,
                                           fit: BoxFit.cover,
                                           height: 250,
                                           width: 1000,
@@ -238,10 +244,9 @@ class Features extends StatelessWidget {
     return GestureDetector(
       onTap: () {
         if (id == 1) {
-          Navigator.of(context).push(MaterialPageRoute(builder: (context) => ListCompetency()));
-        } else {
-
-        }
+          Navigator.of(context)
+              .push(MaterialPageRoute(builder: (context) => ListCompetency()));
+        } else {}
       },
       child: Card(
         margin: EdgeInsets.all(10),

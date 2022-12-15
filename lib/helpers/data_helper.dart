@@ -6,6 +6,7 @@ class DataHelper{
   String Role_Admin = "Admin";
   String Role_Supervisor = "Supervisor";
   String Role_Operator = "Operator";
+  String BaseURL = "https://humancapitalpriokpomu.com/";
   final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
   SharedPreferences? sharedPref;
 
