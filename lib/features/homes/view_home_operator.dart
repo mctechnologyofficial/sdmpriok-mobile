@@ -8,6 +8,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:liquid_progress_indicator/liquid_progress_indicator.dart';
 import 'package:provider/provider.dart';
+import 'package:sdm_priok/features/competency/view_category_competency.dart';
 import 'package:sdm_priok/features/competency/view_list_competency.dart';
 import 'package:sdm_priok/features/employee/view_list_employee.dart';
 import 'package:sdm_priok/helpers/colours.dart';
@@ -244,8 +245,8 @@ class Features extends StatelessWidget {
     return GestureDetector(
       onTap: () {
         if (id == 1) {
-          Navigator.of(context)
-              .push(MaterialPageRoute(builder: (context) => ListCompetency()));
+          // Navigator.of(context).push(MaterialPageRoute(builder: (context) => ListCompetency()));
+          Navigator.of(context).push(MaterialPageRoute(builder: (context) => ListCategoryCompetency()));
         } else {}
       },
       child: Card(

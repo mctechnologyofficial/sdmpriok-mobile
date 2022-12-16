@@ -1,20 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
-import 'package:sdm_priok/features/competency/view_category_competency.dart';
 import 'package:sdm_priok/features/competency/view_detail_competency.dart';
 import 'package:sdm_priok/provider/competency_provider.dart';
 
 import '../../helpers/colours.dart';
 
-class ListCompetency extends StatefulWidget {
-  const ListCompetency({Key? key}) : super(key: key);
+class ListCategoryCompetency extends StatefulWidget {
+  const ListCategoryCompetency({Key? key}) : super(key: key);
 
   @override
-  State<ListCompetency> createState() => _ListCompetencyState();
+  State<ListCategoryCompetency> createState() => _ListCategoryCompetencyState();
 }
 
-class _ListCompetencyState extends State<ListCompetency> {
+class _ListCategoryCompetencyState extends State<ListCategoryCompetency> {
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
@@ -24,19 +23,18 @@ class _ListCompetencyState extends State<ListCompetency> {
     return SafeArea(
         child: Scaffold(
       appBar: AppBar(
-        title: Text("List Competencies"),
+        title: Text("Category Competencies"),
         backgroundColor: ColorPrimary,
       ),
       backgroundColor: ColorWhite,
       body: RefreshIndicator(
         onRefresh: () => Provider.of<CompetencyProvider>(context, listen: false)
-            .getCompetencys(),
+            .getCategoryCompetencys("Tools Gas Turbin"),
         color: ColorPrimary,
         child: Container(
           margin: EdgeInsets.all(10),
           child: FutureBuilder(
-              future: Provider.of<CompetencyProvider>(context, listen: false)
-                  .getCompetencys(),
+              future: Provider.of<CompetencyProvider>(context, listen: false).getCategoryCompetencys("Tools Gas Turbin"),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return Center(
@@ -50,17 +48,14 @@ class _ListCompetencyState extends State<ListCompetency> {
                           childAspectRatio: (itemWidth / itemHeight),
                           crossAxisCount: 2,
                         ),
-                        itemCount: data.dataCompetencys.length,
+                        itemCount: data.dataCategory.length,
                         itemBuilder: (_, i) => InkWell(
                           onTap: () {
                             Navigator.of(context).push(MaterialPageRoute(
-                                // builder: (context) => DetailCompetency()));
-                                builder: (context) => ListCategoryCompetency()));
+                                builder: (context) => DetailCompetency()));
                           },
-                          child: ChildCompetency(
-                              data.dataCompetencys[i].id,
-                              data.dataCompetencys[i].image,
-                              data.dataCompetencys[i].name),
+                          child: ChildCategory(
+                              i, data.dataCategory[i].category),
                         ),
                       );
                     },
@@ -73,11 +68,11 @@ class _ListCompetencyState extends State<ListCompetency> {
   }
 }
 
-class ChildCompetency extends StatelessWidget {
-  int id = 0;
-  String image = "", name = "";
+class ChildCategory extends StatelessWidget {
+  int number = 0;
+  String name = "";
 
-  ChildCompetency(this.id, this.image, this.name) {}
+  ChildCategory(this.number, this.name) {}
 
   @override
   Widget build(BuildContext context) {
@@ -89,20 +84,18 @@ class ChildCompetency extends StatelessWidget {
         padding: EdgeInsets.all(10),
         width: double.infinity,
         color: Colors.white,
-        child: Column(
+        child: Row(
           children: [
-            ClipRRect(
-                borderRadius: BorderRadius.circular(50),
-                child: image.isEmpty
-                    ? Image.asset("assets/icons/ic_competency.png",
-                        height: 50, width: 50, fit: BoxFit.cover)
-                    : Image.network(
-                        "https://humancapitalpriokpomu.com/" + image,
-                        height: 50,
-                        width: 50,
-                        fit: BoxFit.cover)),
+            Text(
+              number.toString(),
+              style: GoogleFonts.poppins(
+                fontSize: 14,
+                fontWeight: FontWeight.w400,
+              ),
+              textAlign: TextAlign.left,
+            ),
             SizedBox(
-              height: 10,
+              width: 10,
             ),
             Text(
               name,
