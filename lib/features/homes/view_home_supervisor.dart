@@ -173,8 +173,7 @@ class _HomeSupervisorPageState extends State<HomeSupervisorPage> {
                 ),
                 // ComplicatedImageDemo(),
                 FutureBuilder(
-                    future: Provider.of<SliderProvider>(context, listen: false)
-                        .getSliders(),
+                    future: Provider.of<SliderProvider>(context, listen: false).getSliders(),
                     builder: (context, snapshot) {
                       if (snapshot.connectionState == ConnectionState.waiting) {
                         return Center(

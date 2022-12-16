@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:sdm_priok/features/auth/view_login.dart';
 import 'package:sdm_priok/features/homes/view_home_admin.dart';
 import 'package:sdm_priok/features/homes/view_home_operator.dart';
@@ -19,6 +20,7 @@ class _SplashScreenState extends State<SplashScreenPage> {
   DataHelper dataHelper = new DataHelper();
   SharedPreferences? sharedPref;
   String? loginEmail = "";
+  String role = "";
 
   @override
   void initState() {
@@ -48,28 +50,19 @@ class _SplashScreenState extends State<SplashScreenPage> {
   }
 
   startHomeScreen() async {
+    this.sharedPref = await SharedPreferences.getInstance();
+    role = this.sharedPref?.getString("Role") as String;
     var duration = const Duration(seconds: 2);
     return Timer(duration, () {
-      Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (_) {
-        // if (loginEmail == "admin@gmail.com") {
-        //   return HomeAdminPage();
-        // } else if (loginEmail == "supervisor@gmail.com") {
-        //   return HomeSupervisorPage();
-        // } else if (loginEmail == "operator@gmail.com") {
-          return HomeOperatorPage();
-        // } else {
-        //   return HomeSupervisorPage();
-        // }
-        // if (dataHelper.getLoginRole() == dataHelper.Role_Admin) {
-        //   return HomeAdminPage();
-        // } else if (dataHelper.getLoginRole() == dataHelper.Role_Supervisor) {
-        //   return HomeSupervisorPage();
-        // } else if (dataHelper.getLoginRole() == dataHelper.Role_Operator) {
-        //   return HomeOperatorPage();
-        // } else {
-        //   return LoginPage();
-        // }
-      }));
+      // if (role == dataHelper.Role_Admin) {
+      //   Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => HomeAdminPage()), (route) => false);
+      // } else if (role == dataHelper.Role_Supervisor) {
+      //   Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => HomeSupervisorPage()), (route) => false);
+      // } else if (role == dataHelper.Role_Operator) {
+        Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => HomeOperatorPage()), (route) => false);
+      // } else {
+      //   EasyLoading.showInfo('Your account has a problem, please contact the call center !');
+      // }
     });
   }
 

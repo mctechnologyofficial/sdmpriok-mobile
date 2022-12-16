@@ -1,3 +1,8 @@
+// To parse this JSON data, do
+//
+//     final responseGetCategory = responseGetCategoryFromJson(jsonString);
+
+import 'package:meta/meta.dart';
 import 'dart:convert';
 
 List<ResponseGetCategory> responseGetCategoryFromJson(String str) => List<ResponseGetCategory>.from(json.decode(str).map((x) => ResponseGetCategory.fromJson(x)));

@@ -2,12 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:sdm_priok/features/competency/view_detail_competency.dart';
+import 'package:sdm_priok/features/competency/view_sub_category_competency.dart';
 import 'package:sdm_priok/provider/competency_provider.dart';
 
 import '../../helpers/colours.dart';
 
 class ListCategoryCompetency extends StatefulWidget {
-  const ListCategoryCompetency({Key? key}) : super(key: key);
+  final String category;
+  const ListCategoryCompetency({Key? key, required this.category}) : super(key: key);
 
   @override
   State<ListCategoryCompetency> createState() => _ListCategoryCompetencyState();
@@ -16,9 +18,10 @@ class ListCategoryCompetency extends StatefulWidget {
 class _ListCategoryCompetencyState extends State<ListCategoryCompetency> {
   @override
   Widget build(BuildContext context) {
+    print("Category : " + widget.category);
     var size = MediaQuery.of(context).size;
-    final double itemHeight = (size.height) / 5;
-    final double itemWidth = size.width / 2;
+    final double itemHeight = (size.height) / 10;
+    final double itemWidth = size.width;
 
     return SafeArea(
         child: Scaffold(
@@ -28,13 +31,12 @@ class _ListCategoryCompetencyState extends State<ListCategoryCompetency> {
       ),
       backgroundColor: ColorWhite,
       body: RefreshIndicator(
-        onRefresh: () => Provider.of<CompetencyProvider>(context, listen: false)
-            .getCategoryCompetencys("Tools Gas Turbin"),
+        onRefresh: () => Provider.of<CompetencyProvider>(context, listen: false).getCategoryCompetencys(widget.category),
         color: ColorPrimary,
         child: Container(
           margin: EdgeInsets.all(10),
           child: FutureBuilder(
-              future: Provider.of<CompetencyProvider>(context, listen: false).getCategoryCompetencys("Tools Gas Turbin"),
+              future: Provider.of<CompetencyProvider>(context, listen: false).getCategoryCompetencys(widget.category),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return Center(
@@ -46,16 +48,15 @@ class _ListCategoryCompetencyState extends State<ListCategoryCompetency> {
                       return GridView.builder(
                         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                           childAspectRatio: (itemWidth / itemHeight),
-                          crossAxisCount: 2,
+                          crossAxisCount: 1,
                         ),
                         itemCount: data.dataCategory.length,
                         itemBuilder: (_, i) => InkWell(
                           onTap: () {
-                            Navigator.of(context).push(MaterialPageRoute(
-                                builder: (context) => DetailCompetency()));
+                            // Navigator.of(context).push(MaterialPageRoute(builder: (context) => DetailCompetency()));
+                            Navigator.of(context).push(MaterialPageRoute(builder: (context) => ListSubCategoryCompetency(subcategory: data.dataCategory[i].category)));
                           },
-                          child: ChildCategory(
-                              i, data.dataCategory[i].category),
+                          child: ChildCategory(i + 1, data.dataCategory[i].category),
                         ),
                       );
                     },

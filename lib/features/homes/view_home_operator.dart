@@ -157,8 +157,7 @@ class _HomeOperatorPageState extends State<HomeOperatorPage> {
                 ),
                 // ComplicatedImageDemo(),
                 FutureBuilder(
-                    future: Provider.of<SliderProvider>(context, listen: false)
-                        .getSliders(),
+                    future: Provider.of<SliderProvider>(context, listen: false).getSliders(),
                     builder: (context, snapshot) {
                       if (snapshot.connectionState == ConnectionState.waiting) {
                         return Center(
@@ -245,8 +244,7 @@ class Features extends StatelessWidget {
     return GestureDetector(
       onTap: () {
         if (id == 1) {
-          // Navigator.of(context).push(MaterialPageRoute(builder: (context) => ListCompetency()));
-          Navigator.of(context).push(MaterialPageRoute(builder: (context) => ListCategoryCompetency()));
+          Navigator.of(context).push(MaterialPageRoute(builder: (context) => ListCompetency()));
         } else {}
       },
       child: Card(

@@ -1,42 +1,41 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
-import 'package:sdm_priok/features/competency/view_category_competency.dart';
 import 'package:sdm_priok/features/competency/view_detail_competency.dart';
 import 'package:sdm_priok/provider/competency_provider.dart';
 
 import '../../helpers/colours.dart';
 
-class ListCompetency extends StatefulWidget {
-  const ListCompetency({Key? key}) : super(key: key);
+class ListSubCategoryCompetency extends StatefulWidget {
+  final String subcategory;
+  const ListSubCategoryCompetency({Key? key, required this.subcategory}) : super(key: key);
 
   @override
-  State<ListCompetency> createState() => _ListCompetencyState();
+  State<ListSubCategoryCompetency> createState() => _ListSubCategoryCompetencyState();
 }
 
-class _ListCompetencyState extends State<ListCompetency> {
+class _ListSubCategoryCompetencyState extends State<ListSubCategoryCompetency> {
   @override
   Widget build(BuildContext context) {
+    print("SubCategory : " + widget.subcategory);
     var size = MediaQuery.of(context).size;
-    final double itemHeight = (size.height) / 5;
-    final double itemWidth = size.width / 2;
+    final double itemHeight = (size.height) / 10;
+    final double itemWidth = size.width;
 
     return SafeArea(
         child: Scaffold(
       appBar: AppBar(
-        title: Text("List Competencies"),
+        title: Text("Sub Category Competencies"),
         backgroundColor: ColorPrimary,
       ),
       backgroundColor: ColorWhite,
       body: RefreshIndicator(
-        onRefresh: () => Provider.of<CompetencyProvider>(context, listen: false)
-            .getCompetencys(),
+        onRefresh: () => Provider.of<CompetencyProvider>(context, listen: false).getSubCategoryCompetencys(widget.subcategory),
         color: ColorPrimary,
         child: Container(
           margin: EdgeInsets.all(10),
           child: FutureBuilder(
-              future: Provider.of<CompetencyProvider>(context, listen: false)
-                  .getCompetencys(),
+              future: Provider.of<CompetencyProvider>(context, listen: false).getSubCategoryCompetencys(widget.subcategory),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return Center(
@@ -48,18 +47,14 @@ class _ListCompetencyState extends State<ListCompetency> {
                       return GridView.builder(
                         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                           childAspectRatio: (itemWidth / itemHeight),
-                          crossAxisCount: 2,
+                          crossAxisCount: 1,
                         ),
-                        itemCount: data.dataCompetencys.length,
+                        itemCount: data.dataSubCategory.length,
                         itemBuilder: (_, i) => InkWell(
                           onTap: () {
-                            Navigator.of(context).push(MaterialPageRoute(
-                                builder: (context) => ListCategoryCompetency(category: data.dataCompetencys[i].name,)));
+                            Navigator.of(context).push(MaterialPageRoute(builder: (context) => DetailCompetency()));
                           },
-                          child: ChildCompetency(
-                              data.dataCompetencys[i].id,
-                              data.dataCompetencys[i].image,
-                              data.dataCompetencys[i].name),
+                          child: ChildSubCategory(i + 1, data.dataSubCategory[i].subCategory),
                         ),
                       );
                     },
@@ -72,11 +67,11 @@ class _ListCompetencyState extends State<ListCompetency> {
   }
 }
 
-class ChildCompetency extends StatelessWidget {
-  int id = 0;
-  String image = "", name = "";
+class ChildSubCategory extends StatelessWidget {
+  int number = 0;
+  String name = "";
 
-  ChildCompetency(this.id, this.image, this.name) {}
+  ChildSubCategory(this.number, this.name) {}
 
   @override
   Widget build(BuildContext context) {
@@ -88,20 +83,18 @@ class ChildCompetency extends StatelessWidget {
         padding: EdgeInsets.all(10),
         width: double.infinity,
         color: Colors.white,
-        child: Column(
+        child: Row(
           children: [
-            ClipRRect(
-                borderRadius: BorderRadius.circular(50),
-                child: image.isEmpty
-                    ? Image.asset("assets/icons/ic_competency.png",
-                        height: 50, width: 50, fit: BoxFit.cover)
-                    : Image.network(
-                        "https://humancapitalpriokpomu.com/" + image,
-                        height: 50,
-                        width: 50,
-                        fit: BoxFit.cover)),
+            Text(
+              number.toString(),
+              style: GoogleFonts.poppins(
+                fontSize: 14,
+                fontWeight: FontWeight.w400,
+              ),
+              textAlign: TextAlign.left,
+            ),
             SizedBox(
-              height: 10,
+              width: 10,
             ),
             Text(
               name,
