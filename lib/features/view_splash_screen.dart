@@ -55,11 +55,11 @@ class _SplashScreenState extends State<SplashScreenPage> {
     var duration = const Duration(seconds: 2);
     return Timer(duration, () {
       // if (role == dataHelper.Role_Admin) {
-      //   Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => HomeAdminPage()), (route) => false);
+        Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => HomeAdminPage()), (route) => false);
       // } else if (role == dataHelper.Role_Supervisor) {
       //   Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => HomeSupervisorPage()), (route) => false);
       // } else if (role == dataHelper.Role_Operator) {
-        Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => HomeOperatorPage()), (route) => false);
+      //   Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => HomeOperatorPage()), (route) => false);
       // } else {
       //   EasyLoading.showInfo('Your account has a problem, please contact the call center !');
       // }

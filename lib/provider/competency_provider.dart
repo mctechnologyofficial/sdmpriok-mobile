@@ -8,10 +8,13 @@ import 'package:sdm_priok/models/responses/response_get_sub_category.dart';
 
 class CompetencyProvider extends ChangeNotifier {
   List<ResponseGetCompetency> _data = [];
+
   List<ResponseGetCompetency> get dataCompetencys => _data;
   List<ResponseGetCategory> listCategory = [];
+
   List<ResponseGetCategory> get dataCategory => listCategory;
   List<ResponseGetSubCategory> listSubCategory = [];
+
   List<ResponseGetSubCategory> get dataSubCategory => listSubCategory;
 
   Future<List<ResponseGetCompetency>> getCompetencys() async {
@@ -31,8 +34,10 @@ class CompetencyProvider extends ChangeNotifier {
     }
   }
 
-  Future<List<ResponseGetCategory>> getCategoryCompetencys(String category) async {
-    var endpointUrl = 'https://humancapitalpriokpomu.com/api/competency-op/getcategory';
+  Future<List<ResponseGetCategory>> getCategoryCompetencys(
+      String category) async {
+    var endpointUrl =
+        'https://humancapitalpriokpomu.com/api/competency-op/getcategory';
     final uri = Uri.parse(endpointUrl).replace(queryParameters: {
       'competency': category,
     });
@@ -40,8 +45,13 @@ class CompetencyProvider extends ChangeNotifier {
     print("ResponseCode : " + response.statusCode.toString());
     if (response.statusCode == 200) {
       print("RespGetCategoryCompetencys : " + response.body);
-      final result = json.decode(response.body)['data']['data'].cast<Map<String, dynamic>>();
-      listCategory = result.map<ResponseGetCategory>((json) => ResponseGetCategory.fromJson(json)).toList();
+      final result = json
+          .decode(response.body)['data']['data']
+          .cast<Map<String, dynamic>>();
+      listCategory = result
+          .map<ResponseGetCategory>(
+              (json) => ResponseGetCategory.fromJson(json))
+          .toList();
       return listCategory;
     } else {
       throw Exception();
@@ -58,7 +68,7 @@ class CompetencyProvider extends ChangeNotifier {
     if (response.statusCode == 200) {
       print("RespGetSubCategoryCompetencys : " + response.body);
       final result = json.decode(response.body)['data']['data'].cast<Map<String, dynamic>>();
-      listSubCategory = result.map<ResponseGetCategory>((json) => ResponseGetSubCategory.fromJson(json)).toList();
+      listSubCategory = result.map<ResponseGetSubCategory>((json) => ResponseGetSubCategory.fromJson(json)).toList();
       return listSubCategory;
     } else {
       throw Exception();
