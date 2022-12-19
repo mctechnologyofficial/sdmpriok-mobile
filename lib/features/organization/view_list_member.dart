@@ -2,21 +2,20 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
-import 'package:sdm_priok/features/employee/view_add_employee.dart';
-import 'package:sdm_priok/features/employee/view_detail_employee.dart';
 import 'package:sdm_priok/helpers/colours.dart';
+import 'package:sdm_priok/provider/organization_provider.dart';
 
 import '../../helpers/strings.dart';
-import '../../provider/employee_provider.dart';
 
-class ListEmployee extends StatefulWidget {
-  const ListEmployee({Key? key}) : super(key: key);
+class ListOrganizationMember extends StatefulWidget {
+  final int idTeam;
+  const ListOrganizationMember({Key? key, required this.idTeam}) : super(key: key);
 
   @override
-  State<ListEmployee> createState() => _EmployeeState();
+  State<ListOrganizationMember> createState() => _ListOrganizationMemberState();
 }
 
-class _EmployeeState extends State<ListEmployee> {
+class _ListOrganizationMemberState extends State<ListOrganizationMember> {
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
@@ -26,51 +25,42 @@ class _EmployeeState extends State<ListEmployee> {
     return SafeArea(
         child: Scaffold(
       appBar: AppBar(
-        title: Text("List Employee"),
+        title: Text("List Organization Member"),
         backgroundColor: ColorPrimary,
       ),
       backgroundColor: ColorWhite,
       body: RefreshIndicator(
-        onRefresh: () => Provider.of<EmployeeProvider>(context, listen: false).getEmployee(),
+        onRefresh: () => Provider.of<OrganizationProvider>(context, listen: false).getOrganizationMember(widget.idTeam),
         color: ColorPrimary,
         child: Container(
           margin: EdgeInsets.all(10),
           child: FutureBuilder(
-              future: Provider.of<EmployeeProvider>(context, listen: false)
-                  .getEmployee(),
+              future: Provider.of<OrganizationProvider>(context, listen: false).getOrganizationMember(widget.idTeam),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return Center(
                     child: CircularProgressIndicator(),
                   );
                 } else {
-                  return Consumer<EmployeeProvider>(
+                  return Consumer<OrganizationProvider>(
                     builder: (context, data, _) {
                       return GridView.builder(
                         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                           childAspectRatio: (itemWidth / itemHeight),
                           crossAxisCount: 2,
                         ),
-                        itemCount: data.dataEmployee.length,
+                        itemCount: data.dataOrganizationMember.length,
                         itemBuilder: (_, i) => InkWell(
                           onTap: () {
-                            Navigator.of(context).push(MaterialPageRoute(
-                                builder: (context) => DetailEmployee(
-                                    dataHash: data.dataEmployee[i].hash)));
+                            // Navigator.of(context).push(MaterialPageRoute(builder: (context) => DetailEmployee(dataHash: data.dataEmployee[i].hash)));
                           },
                           child: ChildKaryawan(
-                              int.parse(data.dataEmployee[i].nip.isEmpty
-                                  ? "0"
-                                  : data.dataEmployee[i].nip),
-                              data.dataEmployee[i].image == null
-                                  ? ""
-                                  : data.dataEmployee[i].image,
-                              data.dataEmployee[i].name,
-                              data.dataEmployee[i].phone,
-                              data.dataEmployee[i].roles.length > 0
-                                  ? data.dataEmployee[i].roles[0].name
-                                  : "Unknown",
-                              data.dataEmployee[i].teams.name),
+                              data.dataOrganizationMember[i].id,
+                              data.dataOrganizationMember[i].image == null ? "" : data.dataOrganizationMember[i].image,
+                              data.dataOrganizationMember[i].name == null ? "" : data.dataOrganizationMember[i].name,
+                              data.dataOrganizationMember[i].nip == null ? "" : data.dataOrganizationMember[i].nip,
+                              data.dataOrganizationMember[i].phone == null ? "" : data.dataOrganizationMember[i].phone,
+                              data.dataOrganizationMember[i].email == null ? "" : data.dataOrganizationMember[i].email),
                         ),
                       );
                     },
@@ -79,24 +69,16 @@ class _EmployeeState extends State<ListEmployee> {
               }),
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        backgroundColor: ColorPrimary,
-        child: Text("+"),
-        onPressed: () {
-          Navigator.of(context)
-              .push(MaterialPageRoute(builder: (context) => EmployeeAdd()));
-        },
-      ),
     ));
   }
 }
 
 class ChildKaryawan extends StatelessWidget {
   int id = 0;
-  String image = "", name = "", phone = "", position = "", team = "";
+  String image = "", name = "", nip = "", phone = "",  email = "";
 
   ChildKaryawan(
-      this.id, this.image, this.name, this.phone, this.position, this.team) {}
+      this.id, this.image, this.name, this.nip, this.phone, this.email) {}
 
   @override
   Widget build(BuildContext context) {
@@ -142,9 +124,45 @@ class ChildKaryawan extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
                         children: [
                           Container(
-                            width: 60,
+                            width: 50,
+                            child: Text(
+                              "NIP",
+                              style: GoogleFonts.poppins(
+                                fontSize: 14,
+                                fontWeight: FontWeight.w400,
+                              ),
+                              textAlign: TextAlign.left,
+                            ),
+                          ),
+                          Container(
+                            width: 10,
+                            child: Text(
+                              " : ",
+                              style: GoogleFonts.poppins(
+                                fontSize: 14,
+                                fontWeight: FontWeight.w400,
+                              ),
+                              textAlign: TextAlign.left,
+                            ),
+                          ),
+                          Text(
+                            nip,
+                            style: GoogleFonts.poppins(
+                              fontSize: 14,
+                              fontWeight: FontWeight.w400,
+                            ),
+                            textAlign: TextAlign.left,
+                          ),
+                        ],
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          Container(
+                            width: 50,
                             child: Text(
                               "Phone",
                               style: GoogleFonts.poppins(
@@ -176,11 +194,12 @@ class ChildKaryawan extends StatelessWidget {
                         ],
                       ),
                       Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
                         children: [
                           Container(
-                            width: 60,
+                            width: 50,
                             child: Text(
-                              "Position",
+                              "Email",
                               style: GoogleFonts.poppins(
                                 fontSize: 14,
                                 fontWeight: FontWeight.w400,
@@ -200,41 +219,7 @@ class ChildKaryawan extends StatelessWidget {
                             ),
                           ),
                           Text(
-                            position,
-                            style: GoogleFonts.poppins(
-                              fontSize: 14,
-                              fontWeight: FontWeight.w400,
-                            ),
-                            textAlign: TextAlign.left,
-                          ),
-                        ],
-                      ),
-                      Row(
-                        children: [
-                          Container(
-                            width: 60,
-                            child: Text(
-                              "Team",
-                              style: GoogleFonts.poppins(
-                                fontSize: 14,
-                                fontWeight: FontWeight.w400,
-                              ),
-                              textAlign: TextAlign.left,
-                            ),
-                          ),
-                          Container(
-                            width: 10,
-                            child: Text(
-                              " : ",
-                              style: GoogleFonts.poppins(
-                                fontSize: 14,
-                                fontWeight: FontWeight.w400,
-                              ),
-                              textAlign: TextAlign.left,
-                            ),
-                          ),
-                          Text(
-                            team,
+                            email,
                             style: GoogleFonts.poppins(
                               fontSize: 14,
                               fontWeight: FontWeight.w400,

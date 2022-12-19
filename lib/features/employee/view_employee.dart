@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:sdm_priok/features/employee/view_list_employee.dart';
+import 'package:sdm_priok/features/organization/view_list_organization.dart';
 import 'package:sdm_priok/features/role/view_list_role.dart';
 import 'package:sdm_priok/features/team/view_list_team.dart';
 
@@ -27,7 +28,8 @@ class _EmployeeState extends State<Employee> {
           children: [
             Features(1, "assets/icons/ic_employee.png", "Employee"),
             Features(2, "assets/icons/ic_team.png", "Team"),
-            Features(3, "assets/icons/ic_roles.png", "Role"),
+            Features(3, "assets/icons/ic_organization.png", "Organization"),
+            Features(4, "assets/icons/ic_roles.png", "Role"),
           ],
         ),
       ),
@@ -51,6 +53,8 @@ class Features extends StatelessWidget {
         }else if (id == 2) {
           Navigator.of(context).push(MaterialPageRoute(builder: (context) => ListTeam()));
         }else if (id == 3) {
+          Navigator.of(context).push(MaterialPageRoute(builder: (context) => ListOrganization()));
+        }else if (id == 4) {
           Navigator.of(context).push(MaterialPageRoute(builder: (context) => ListRole()));
         }
       },

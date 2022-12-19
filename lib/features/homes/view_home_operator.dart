@@ -160,8 +160,11 @@ class _HomeOperatorPageState extends State<HomeOperatorPage> {
                     future: Provider.of<SliderProvider>(context, listen: false).getSliders(),
                     builder: (context, snapshot) {
                       if (snapshot.connectionState == ConnectionState.waiting) {
-                        return Center(
-                          child: CircularProgressIndicator(),
+                        return Container(
+                          height: 160,
+                          child: Center(
+                            child: CircularProgressIndicator(),
+                          ),
                         );
                       } else {
                         return Consumer<SliderProvider>(
